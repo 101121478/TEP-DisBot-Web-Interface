@@ -131,10 +131,10 @@ def recieveDeleteTopicForm():
     else:
         # Initialise connection to SQL database with details from .env file
         mydb = mysql.connector.connect(
-            host=dbHost,
-            user=dbUser,
-            password=dbPassword,
-            database=db
+            host="sql6.freesqldatabase.com",
+            user="sql6411702",
+            password="3cmKnvBStZ",
+            database="sql6411702"
         )
         mycursor = mydb.cursor()
 
