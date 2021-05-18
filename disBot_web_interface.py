@@ -16,9 +16,9 @@ app = Flask(__name__)
 app.secret_key = b"%\xe0'\x01\xdeH\x8e\x85m|\xb3\xffCN\xc9g"
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"  
 
-app.config["DISCORD_CLIENT_ID"] = 843032598011445248
-app.config["DISCORD_CLIENT_SECRET"] = "E827wO8tzzxIjqAldZhTCaxlmxdOKLJ_"
-app.config["DISCORD_BOT_TOKEN"] = "ODQzMDMyNTk4MDExNDQ1MjQ4.YJ99Sg.-WpEQhikX5RVL4egRFHmFb0B1S0"
+app.config["DISCORD_CLIENT_ID"] = os.getenv('CLIENT_ID')
+app.config["DISCORD_CLIENT_SECRET"] = os.getenv('CLIENT_SECRET')
+app.config["DISCORD_BOT_TOKEN"] = os.getenv('BOT_TOKEN')
 app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp.com/callback"
 
 discord = DiscordOAuth2Session(app)
