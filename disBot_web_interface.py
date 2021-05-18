@@ -19,7 +19,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"
 app.config["DISCORD_CLIENT_ID"] = 843032598011445248
 app.config["DISCORD_CLIENT_SECRET"] = "E827wO8tzzxIjqAldZhTCaxlmxdOKLJ_"
 app.config["DISCORD_BOT_TOKEN"] = "ODQzMDMyNTk4MDExNDQ1MjQ4.YJ99Sg.-WpEQhikX5RVL4egRFHmFb0B1S0"
-app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp.com/callback/"
+app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp.com/callback"
 
 discord = DiscordOAuth2Session(app)
 
