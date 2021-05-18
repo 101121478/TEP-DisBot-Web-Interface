@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DisBot Web Interface - Delete Topic/Concept Page</title>
+	<link href="styles/style.css" rel="stylesheet"/>
+	<style>
+		table, th, td {
+			border: 1px solid black
+		}
+	</style>
+</head>
+<body>
+	<h1>Delete a Topic/Concept</h1>
+
+	<form action="{{ url_for('recieveDeleteTopicForm') }}" method="POST">
+		<p></p><label>Enter the Topic/Concept:</label>
+			<input type="text" name="topic" pattern="[a-zA-Z]+" title="Only alphabetical characters can be entered"></p>
+		
+		<p><input type="submit" value="Delete Topic/Concept"></p>
+	</form>
+
+	<p>{% if output %}{{ output }}{% endif %}</p>
+
+
+	<button onclick="location.href = '/'" id="backButton">Back</button>
+</body>
+</html>
+
+

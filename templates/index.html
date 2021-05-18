@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DisBot Web Interface - Index Page</title>
+	<link href="styles/style.css" rel="stylesheet"/>
+</head>
+<body>
+	<h1>DisBot - Web Interface</h1>
+	<p id='welcome'>Welcome {{ user.name }}</p>
+	<p><button id="displayTopics">View Topics/Concepts</button></p>
+	<p><button id="addTopic">Add a Topic/Concept</button></p>
+	<p><button id="deleteTopic">Delete a Topic/Concept</button></p>
+
+	<a href="/logout/">Logout</a>
+
+	<script type="text/javascript">
+		document.getElementById("displayTopics").onclick = function() {
+			location.href = "/displayTopics/";
+		};
+
+		document.getElementById("addTopic").onclick = function() {
+			location.href = "/addTopic/";
+		};
+
+		document.getElementById("deleteTopic").onclick = function() {
+			location.href = "/deleteTopic/";
+		};
+	</script>
+
+</body>
+</html>
+

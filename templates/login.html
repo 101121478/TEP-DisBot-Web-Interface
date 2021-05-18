@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8" />
+	<title>DisBot Web Interface - Login Page</title>
+	<link href="styles/style.css" rel="stylesheet"/>
+</head>
+<body>
+	<h2>DisBot Web Interface Login</h2>
+	<p id='welcome'>Please login to continue</p>
+	<p><span>{{ errorText }}</span></p>
+	<button id="login">Login</button><br/>
+
+	<script type="text/javascript">
+		document.getElementById("login").onclick = function() {
+			location.href = "/login/";
+		};
+	</script>
+</body>

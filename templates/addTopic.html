@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DisBot Web Interface - Add Topic/Concept Page</title>
+	<link href="styles/style.css" rel="stylesheet"/>
+	<style>
+		table, th, td {
+			border: 1px solid black
+		}
+	</style>
+</head>
+<body>
+	<h1>Add a Topic/Concept</h1>
+	<form action="{{ url_for('recieveAddTopicForm') }}" method="POST">
+		<p></p><label>Enter the Topic/Concept:</label>
+			<input type="text" name="topic" pattern="[a-zA-Z]+" title="Only alphabetical characters can be entered"></p>
+		
+		<p><input type="submit" value="Add Topic/Concept"></p>
+	</form>
+
+	<p>{% if output %}{{ output }}{% endif %}</p>
+
+	<p><button onclick="location.href = '/'" id="backButton">Back</button></p>
+</body>
+</html>
+
+
