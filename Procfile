@@ -1,1 +1,1 @@
-web: gunicorn app:disBot_web_interface
+web: gunicorn disBot_web_interface
