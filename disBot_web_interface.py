@@ -33,12 +33,12 @@ def welcome_user(user):
 
 #Initial page that is displayed when accessing web interface
 @app.route("/")
-async def index():
+def index():
     if not discord.authorized:
         return render_template("login.html")
     
     user = discord.fetch_user()
-    user_guilds = await discord.fetch_guilds()
+    user_guilds = discord.fetch_guilds()
 
     templateData = {
             'user' : user_guilds
