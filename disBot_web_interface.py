@@ -92,6 +92,9 @@ def displayAddTopicForm():
 # Executes when the user submits the form on addTopic page. Submits to itself via POST and topic/concept is added to topics table.
 @app.route("/addTopic/", methods=['POST'])
 def recieveAddTopicForm():
+    if not discord.authorized:
+        return redirect(url_for('index'))
+
     topic = request.form['topic']
 
     if topic == "":
@@ -129,12 +132,18 @@ def recieveAddTopicForm():
 # Executes when user clicks delete topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/deleteTopic/")
 def displayDeleteTopicForm():
+    if not discord.authorized:
+        return redirect(url_for('index'))
+
     return render_template('deleteTopic.html')
 
 
 # Executes when the user submits the form on deleteTopic page. Submits to itself via POST and topic/concept is deleted from topics table.
 @app.route("/deleteTopic/", methods=['POST'])
 def recieveDeleteTopicForm():
+    if not discord.authorized:
+        return redirect(url_for('index'))
+        
     topic = request.form['topic']
 
     if topic == "":
@@ -171,7 +180,9 @@ def recieveDeleteTopicForm():
 #HTML page for displaying the topics SQL table 
 @app.route('/displayTopics/')
 def displayTopics():
-
+    if not discord.authorized:
+        return redirect(url_for('index'))
+    
     topics = []
     counts = []
 
@@ -200,9 +211,13 @@ def displayTopics():
         }
     return render_template('displayTopics.html', **templateData)
 
+
 #HTML page for displaying the strikes SQL table 
 @app.route('/displayStrikes/')
 def displayStrikes():
+    if not discord.authorized:
+        return redirect(url_for('index'))
+
     users = []
     strikes = []
 
