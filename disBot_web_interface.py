@@ -84,7 +84,7 @@ def callback():
 @app.route("/addTopic/")
 def displayAddTopicForm():
     if not discord.authorized:
-        return redirect(url_for('/'))
+        return redirect(url_for('index'))
 
     return render_template('addTopic.html')
 
