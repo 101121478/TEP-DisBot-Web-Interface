@@ -73,13 +73,13 @@ def index():
 #Catches any 'Unathorized' errors that are thrown. Redirects to index.html.
 @app.errorhandler(Unauthorized)
 def redirect_unauthorized(e):
-    return render_template('login.html', errorText="Error: User not authorized. Only Administrators are authorised to access.")
+    return render_template('login.html', errorText="User not authorized or hasn't logged in. Only Administrators are authorised to access.")
 
 
 #Catches any 'AccessDenied' errors that are thrown. Redirects to index.html.
 @app.errorhandler(AccessDenied)
 def redirect_unauthorized(e):
-    return render_template('login.html', errorText="Error: Access Denied")
+    return render_template('login.html', errorText="Access Denied")
 
 
 # Login page which creates the discord session for the user login.
