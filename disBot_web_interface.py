@@ -1,5 +1,10 @@
 import os
 import mysql.connector
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+import base64
 
 from flask import Flask, render_template, redirect, url_for, request
 from flask_discord import DiscordOAuth2Session, Unauthorized, AccessDenied, requires_authorization
@@ -38,12 +43,13 @@ def index():
         return render_template("login.html")
 
     institute_server_id = 819751859945996300
+    test_server_id = 843032962567766077
     
     user = discord.fetch_user()
     user_guilds = discord.fetch_guilds()
 
     for guild in user_guilds:
-        if guild.id == institute_server_id:
+        if guild.id == test_server_id:
             if guild.permissions.administrator:
                 templateData = {
                         'user'   : user,
@@ -170,6 +176,9 @@ def recieveDeleteTopicForm():
 @app.route('/displayTopics/')
 def displayTopics():
 
+    topics = []
+    counts = []
+
     # Initialise connection to SQL database with details from .env file
     mydb = mysql.connector.connect(
         host=dbHost,
@@ -181,16 +190,25 @@ def displayTopics():
     with mydb:
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM topics ORDER BY count DESC")
-        result = cursor.fetchall()
+        results = cursor.fetchall()
+
+    for row in results:
+        topics.append(row[0])
+        counts.append(row[1])
+
+    topicsGraph = build_barGraph(topics, counts, 'Topics/Concept', 'Count', 'Number of times Topics/Concepts have been discussed')
         
     templateData = {
-        'topics' : result
+        'topics' : results,
+        'graph'  : topicsGraph
         }
     return render_template('displayTopics.html', **templateData)
 
 #HTML page for displaying the strikes SQL table 
 @app.route('/displayStrikes/')
 def displayStrikes():
+    users = []
+    strikes = []
 
     # Initialise connection to SQL database with details from .env file
     mydb = mysql.connector.connect(
@@ -203,14 +221,37 @@ def displayStrikes():
     with mydb:
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM strikes ORDER BY count DESC")
-        result = cursor.fetchall()
-        
+        results = cursor.fetchall()
+    
+    for row in results:
+        users.append(row[0])
+        strikes.append(row[1])
+
+    strikesGraph = build_barGraph(users, strikes, 'Member', 'Strikes', 'Users and the number of strikes they have')
+
     templateData = {
-        'rows' : result
+        'rows' : results,
+        'graph'  : strikesGraph
         }
 
     return render_template('displayStrikes.html', **templateData)
 
+# Builds a bar graph using the data, headings and title provided
+def build_barGraph(x, y, xlabel, ylabel, title):
+    plt.clf()
+
+    img = io.BytesIO()
+
+    plt.bar(x,y)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return 'data:image/png;base64,{}'.format(plot_url)
 
 # Executes when the user presses the logout button in index.html
 @app.route("/logout/")

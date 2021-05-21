@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<meta http-equiv="refresh" content="2">
 	<title>DisBot Web Interface - Common Topics/Concepts Page</title>
-	<link href="styles/style.css" rel="stylesheet"/>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
 	<style>
 		table, th, td {
 			border: 1px solid black
@@ -12,21 +11,23 @@
 	</style>
 </head>
 <body>
-	<h1>Common Topics/Concepts</h1>
-	<table>
-		<tr>
-			<th>Topic/Concept</th>
-			<th>Count</th>
-		</tr>
-		{% for topic in topics %}
-		<tr>
-			<td>{{ topic[0] }}</td>
-			<td>{{ topic[1] }}</td>
-		</tr>
-		{% endfor %}
-	</table>
-	</br>
-	<button onclick="location.href = '/'" id="backButton">Back</button>
+	<section>
+		<h1>Common Topics/Concepts</h1>
+		<table>
+			<tr>
+				<th>Topic/Concept</th>
+				<th>Count</th>
+			</tr>
+			{% for topic in topics %}
+			<tr>
+				<td>{{ topic[0] }}</td>
+				<td>{{ topic[1] }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		</br>
+		<p><img src="{{graph}}"></p>
+	</section>
 </body>
 </html>
 
