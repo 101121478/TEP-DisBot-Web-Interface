@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DisBot Web Interface - View Strikes Page</title>
+	<link href="styles/style.css" rel="stylesheet"/>
+	<style>
+		table, th, td {
+			border: 1px solid black
+		}
+	</style>
+</head>
+<body>
+	<h1>List of Users and Strikes</h1>
+	<table>
+		<tr>
+			<th>User</th>
+			<th>Strikes</th>
+		</tr>
+		{% for row in rows %}
+		<tr>
+			<td>{{ row[0] }}</td>
+			<td>{{ row[1] }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	</br>
+	<button onclick="location.href = '/'" id="backButton">Back</button>
+</body>
+</html>
+
+
