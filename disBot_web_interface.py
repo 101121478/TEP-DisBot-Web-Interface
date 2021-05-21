@@ -49,7 +49,7 @@ def index():
         return render_template("login.html")
 
     user = discord.fetch_user()
-    
+
     if isUserAdmin():
         templateData = {
             'user'   : user,
@@ -89,7 +89,7 @@ def callback():
 # Executes when user clicks add topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/addTopic/")
 def displayAddTopicForm():
-    if not discord.authorized and not isUserAdmin():
+    if not discord.authorized or discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
 
     return render_template('addTopic.html')
