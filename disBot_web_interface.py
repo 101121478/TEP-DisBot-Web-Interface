@@ -7,7 +7,7 @@ import io
 import base64
 
 from flask import Flask, render_template, redirect, url_for, request
-from flask_discord import DiscordOAuth2Session, Unauthorized, AccessDenied, requires_authorization
+from flask_discord import DiscordOAuth2Session, Unauthorized, AccessDenied
 
 
 # Get SQL database details
@@ -84,8 +84,8 @@ def callback():
 @app.route("/addTopic/")
 def displayAddTopicForm():
     if not discord.authorized:
-        return render_template("login.html")
-        
+        return redirect(url_for('/'))
+
     return render_template('addTopic.html')
 
 
