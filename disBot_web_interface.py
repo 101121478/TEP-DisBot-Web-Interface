@@ -43,7 +43,7 @@ def index():
         return render_template("login.html")
 
     institute_server_id = 819751859945996300
-    test_server_id = 843032962567766077
+    test_server_id = institute_server_id
     
     user = discord.fetch_user()
     user_guilds = discord.fetch_guilds()
