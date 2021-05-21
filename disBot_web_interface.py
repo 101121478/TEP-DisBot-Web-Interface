@@ -28,13 +28,6 @@ app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp
 
 discord = DiscordOAuth2Session(app)
 
-# Send a welcome message to the user through Discord DM when they log in through web interface
-def welcome_user(user):
-    dm_channel = discord.bot_request("/users/@me/channels", "POST", json={"recipient_id": user.id})
-    return discord.bot_request(
-        f"/channels/{dm_channel['id']}/messages", "POST", json={"content": "Hello " + user.name + ". This message is to inform tht you recently logged into my web interface."}
-    )
-
 
 #Initial page that is displayed when accessing web interface
 @app.route("/")
@@ -90,6 +83,9 @@ def callback():
 # Executes when user clicks add topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/addTopic/")
 def displayAddTopicForm():
+    if not discord.authorized:
+        return render_template("login.html")
+        
     return render_template('addTopic.html')
 
 
