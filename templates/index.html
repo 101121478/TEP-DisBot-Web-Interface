@@ -9,6 +9,7 @@
 <body>
 	<h1>DisBot - Web Interface</h1>
 	<p id='welcome'>Welcome {{ user.name }}</p>
+	<p><button id="displayStrikes">View Strikes</button></p>
 	<p><button id="displayTopics">View Topics/Concepts</button></p>
 	<p><button id="addTopic">Add a Topic/Concept</button></p>
 	<p><button id="deleteTopic">Delete a Topic/Concept</button></p>
@@ -16,6 +17,10 @@
 	<a href="/logout/">Logout</a>
 
 	<script type="text/javascript">
+		document.getElementById("displayStrikes").onclick = function() {
+			location.href = "/displayStrikes/";
+		};
+
 		document.getElementById("displayTopics").onclick = function() {
 			location.href = "/displayTopics/";
 		};
