@@ -36,20 +36,28 @@ def welcome_user(user):
 def index():
     if not discord.authorized:
         return render_template("login.html")
+
+    institute_server_id = 819751859945996300
     
     user = discord.fetch_user()
     user_guilds = discord.fetch_guilds()
 
-    templateData = {
-            'user' : user_guilds
-        }
-    return render_template("index.html", **templateData)
+    for guild in user_guilds:
+        if guild.id == institute_server_id:
+            if guild.permissions.administrator:
+                templateData = {
+                        'user'   : user,
+                        'guilds' : user_guilds
+                    }
+                return render_template("index.html", **templateData)
+    raise Unauthorized
+
 
 
 #Catches any 'Unathorized' errors that are thrown. Redirects to index.html.
 @app.errorhandler(Unauthorized)
 def redirect_unauthorized(e):
-    return render_template('login.html', errorText="Error: User not authorized.")
+    return render_template('login.html', errorText="Error: User not authorized. Only Administrators are authorised to access.")
 
 
 #Catches any 'AccessDenied' errors that are thrown. Redirects to index.html.
