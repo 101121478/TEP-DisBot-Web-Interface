@@ -28,6 +28,8 @@ app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp
 
 discord = DiscordOAuth2Session(app)
 
+# Check if user is an administrator
+# Used to verify user is allowed to login to web interface.
 def isUserAdmin():
     user_guilds = discord.fetch_guilds()
 
@@ -38,6 +40,15 @@ def isUserAdmin():
             if guild.id == institute_server_id:
                 if guild.permissions.administrator:
                     return True
+    return False
+
+# Check if user is authorised and an admin
+# Used if used attempts to access page via url
+def isAuthorisedAndAdmin():
+    if isUserAdmin():
+        if discord.authorized:
+            return True
+
     return False
 
 
@@ -89,7 +100,7 @@ def callback():
 # Executes when user clicks add topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/addTopic/")
 def displayAddTopicForm():
-    if not discord.authorized or discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
 
     return render_template('addTopic.html')
@@ -98,7 +109,7 @@ def displayAddTopicForm():
 # Executes when the user submits the form on addTopic page. Submits to itself via POST and topic/concept is added to topics table.
 @app.route("/addTopic/", methods=['POST'])
 def recieveAddTopicForm():
-    if not discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
 
     topic = request.form['topic']
@@ -138,7 +149,7 @@ def recieveAddTopicForm():
 # Executes when user clicks delete topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/deleteTopic/")
 def displayDeleteTopicForm():
-    if not discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
 
     return render_template('deleteTopic.html')
@@ -147,7 +158,7 @@ def displayDeleteTopicForm():
 # Executes when the user submits the form on deleteTopic page. Submits to itself via POST and topic/concept is deleted from topics table.
 @app.route("/deleteTopic/", methods=['POST'])
 def recieveDeleteTopicForm():
-    if not discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
 
     topic = request.form['topic']
@@ -186,7 +197,7 @@ def recieveDeleteTopicForm():
 #HTML page for displaying the topics SQL table 
 @app.route('/displayTopics/')
 def displayTopics():
-    if not discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
     
     topics = []
@@ -221,7 +232,7 @@ def displayTopics():
 #HTML page for displaying the strikes SQL table 
 @app.route('/displayStrikes/')
 def displayStrikes():
-    if not discord.authorized and not isUserAdmin():
+    if not isAuthorisedAndAdmin():
         return redirect(url_for('index'))
 
     users = []
