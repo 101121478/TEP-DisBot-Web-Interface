@@ -38,6 +38,7 @@ def index():
         return render_template("login.html")
     
     user = discord.fetch_user()
+    print(user)
 
     templateData = {
             'user' : user
@@ -178,6 +179,29 @@ def displayTopics():
         'topics' : result
         }
     return render_template('displayTopics.html', **templateData)
+
+#HTML page for displaying the strikes SQL table 
+@app.route('/displayStrikes/')
+def displayStrikes():
+
+    # Initialise connection to SQL database with details from .env file
+    mydb = mysql.connector.connect(
+        host=dbHost,
+        user=dbUser,
+        password=dbPassword,
+        database=db
+    )
+
+    with mydb:
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM strikes ORDER BY count DESC")
+        result = cursor.fetchall()
+        
+    templateData = {
+        'rows' : result
+        }
+
+    return render_template('displayStrikes.html', **templateData)
 
 
 # Executes when the user presses the logout button in index.html
