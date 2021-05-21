@@ -28,6 +28,19 @@ app.config["DISCORD_REDIRECT_URI"] = "https://tep-disbot-web-interface.herokuapp
 
 discord = DiscordOAuth2Session(app)
 
+def isUserAdmin():
+    user_guilds = discord.fetch_guilds()
+
+    institute_server_id = 819751859945996300
+
+    if user_guilds:
+        for guild in user_guilds:
+            if guild.id == institute_server_id:
+                if guild.permissions.administrator:
+                    return True
+    return False
+
+
 
 #Initial page that is displayed when accessing web interface
 @app.route("/")
@@ -35,20 +48,13 @@ def index():
     if not discord.authorized:
         return render_template("login.html")
 
-    institute_server_id = 819751859945996300
-    test_server_id = institute_server_id
-    
     user = discord.fetch_user()
-    user_guilds = discord.fetch_guilds()
-
-    for guild in user_guilds:
-        if guild.id == test_server_id:
-            if guild.permissions.administrator:
-                templateData = {
-                        'user'   : user,
-                        'guilds' : user_guilds
-                    }
-                return render_template("index.html", **templateData)
+    
+    if isUserAdmin():
+        templateData = {
+            'user'   : user,
+            }
+        return render_template("index.html", **templateData)
     raise Unauthorized
 
 
@@ -83,7 +89,7 @@ def callback():
 # Executes when user clicks add topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/addTopic/")
 def displayAddTopicForm():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
 
     return render_template('addTopic.html')
@@ -92,7 +98,7 @@ def displayAddTopicForm():
 # Executes when the user submits the form on addTopic page. Submits to itself via POST and topic/concept is added to topics table.
 @app.route("/addTopic/", methods=['POST'])
 def recieveAddTopicForm():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
 
     topic = request.form['topic']
@@ -132,7 +138,7 @@ def recieveAddTopicForm():
 # Executes when user clicks delete topic/concept button on index page. Displays simple text input form to enter topic/concept.
 @app.route("/deleteTopic/")
 def displayDeleteTopicForm():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
 
     return render_template('deleteTopic.html')
@@ -141,9 +147,9 @@ def displayDeleteTopicForm():
 # Executes when the user submits the form on deleteTopic page. Submits to itself via POST and topic/concept is deleted from topics table.
 @app.route("/deleteTopic/", methods=['POST'])
 def recieveDeleteTopicForm():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
-        
+
     topic = request.form['topic']
 
     if topic == "":
@@ -180,7 +186,7 @@ def recieveDeleteTopicForm():
 #HTML page for displaying the topics SQL table 
 @app.route('/displayTopics/')
 def displayTopics():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
     
     topics = []
@@ -215,7 +221,7 @@ def displayTopics():
 #HTML page for displaying the strikes SQL table 
 @app.route('/displayStrikes/')
 def displayStrikes():
-    if not discord.authorized:
+    if not discord.authorized and not isUserAdmin():
         return redirect(url_for('index'))
 
     users = []
